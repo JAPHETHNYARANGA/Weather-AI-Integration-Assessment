@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weather AI Farming Assistant
 
-## Getting Started
+AI-powered farming recommendations for Kenyan farmers using weather data.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Current weather + 7-day forecast
+- AI-generated farming advice (planting, irrigation, harvest timing)
+- Pest/disease risk assessment
+- Crop-specific recommendations (maize, tea, coffee, tomatoes, potatoes)
+- API usage tracking
+- Bilingual support (English/Swahili)
+- Mobile-responsive design
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Get API Key**
+   - Visit [weather-ai.co](https://weather-ai.co)
+   - Create account and get free API key (1,000 requests/month, 200 AI summaries/month)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Configure Environment**
+   ```bash
+   cp .env.local.example .env.local
+   # Edit .env.local and add your WEATHER_API_KEY
+   ```
 
-## Learn More
+3. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `GET /api/weather?lat=X&lon=Y` - Weather data + AI summary
+- `GET /api/usage` - API quota usage
+- `POST /api/analyze` - Farming insights from weather data
+- `GET /api/geocode?city=name` - City coordinates lookup
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app helps farmers answer:
+- Should I plant today?
+- When should I irrigate?
+- Are pest conditions favorable?
+- Is it safe to apply fertilizer?
+- Should I harvest before rain?
+- How much API quota remains?
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+Deploy to Vercel with environment variable `WEATHER_API_KEY` set in project settings.
+
+## License
+
+MIT
