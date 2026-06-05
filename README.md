@@ -19,6 +19,7 @@ An AI-powered weather and farming advisory application built for Kenyan farmers.
 - [API Routes](#api-routes)
 - [Environment Variables Reference](#environment-variables-reference)
 - [Getting a Weather AI API Key](#getting-a-weather-ai-api-key)
+- [Testing](#-testing)
 
 ---
 
@@ -210,6 +211,43 @@ The free plan includes:
 - **200** AI summary requests / month
 
 The app's dashboard displays your live usage against these limits.
+
+---
+
+## 🧪 Testing
+
+The application uses **[Vitest](https://vitest.dev/)** as the test runner for its API route unit tests.
+
+### 📁 Test Structure
+
+The tests are located in the `tests/` directory:
+
+- `tests/setup.ts` — Global setup file (handles mock resetting and environment config)
+- `tests/api/geocode.test.ts` — Geocoding route tests (Kenyan city matches, Nominatim mock)
+- `tests/api/weather.test.ts` — Weather route tests (live response formatting, API error fallback, WMO description mapping)
+- `tests/api/analyze.test.ts` — AI farming analysis route tests (Kiswahili localization, planting/irrigation/harvest rules, temperature warnings, etc.)
+- `tests/api/usage.test.ts` — Usage endpoint tests (resilience to third-party outages, rate limits)
+
+### 🏃 Running the Tests
+
+You can run the tests using the following commands:
+
+#### 1. Run all tests once
+```bash
+npm test
+```
+
+#### 2. Run tests in watch mode (interactive)
+```bash
+npm run test:watch
+```
+
+#### 3. Run tests with coverage report
+```bash
+npm run test:coverage
+```
+
+The coverage report will show file-by-file statements, branches, functions, and line coverage directly in the terminal, and output a detailed HTML report to `coverage/index.html`.
 
 ---
 
