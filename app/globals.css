@@ -3,8 +3,8 @@
 
 /* New Color Palette using HSL for easy theming */
 :root {
-  /* Primary (teal) */
-  --color-primary-h: 170;
+  /* Primary (green) */
+  --color-primary-h: 135;
   --color-primary-s: 60%;
   --color-primary-l: 40%;
   --color-primary: hsl(var(--color-primary-h) var(--color-primary-s) var(--color-primary-l));

@@ -161,46 +161,40 @@ export default function Home() {
   const aiPercentage = usageData ? (usageData.aiUsed / usageData.aiLimit) * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Decorative Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
-      </div>
-
-      <div className="relative container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
-        <header className="backdrop-blur-lg bg-white/70 dark:bg-gray-800/70 rounded-2xl shadow-xl p-6 mb-8 border border-white/20">
+        <header className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-6 shadow-sm">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-3 rounded-2xl shadow-lg">
-                <Sprout className="w-8 h-8 text-white" />
+            <div className="flex items-center gap-4">
+              <div className="bg-emerald-600 p-2.5 rounded-lg">
+                <Sprout className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 dark:from-emerald-300 dark:to-teal-300 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
                   {t[language].title}
                 </h1>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
+                <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">
                   {t[language].subtitle}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setLanguage('en')}
-                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${language === 'en'
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg scale-105'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${language === 'en'
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-250 dark:hover:bg-gray-700'
                   }`}
               >
                 English
               </button>
               <button
                 onClick={() => setLanguage('sw')}
-                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${language === 'sw'
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg scale-105'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${language === 'sw'
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-250 dark:hover:bg-gray-700'
                   }`}
               >
                 Kiswahili
@@ -211,41 +205,41 @@ export default function Home() {
 
         {/* API Usage Cards */}
         {usageData && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-lg border border-white/20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                <span className="text-xs font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2 uppercase tracking-wider">
                   <Activity className="w-4 h-4 text-emerald-600" />
                   {t[language].apiUsage}
                 </span>
-                <span className="text-xs text-gray-500">{t[language].resets}: {new Date(usageData.resetDate).toLocaleDateString()}</span>
+                <span className="text-[10px] text-gray-400">{t[language].resets}: {new Date(usageData.resetDate).toLocaleDateString()}</span>
               </div>
               <div className="space-y-3">
                 <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>{t[language].weatherApiCalls}</span>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="text-gray-500">{t[language].weatherApiCalls}</span>
                     <span className="font-semibold">{usageData.requestsUsed}/{usageData.requestsLimit}</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-gray-150 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${usagePercentage > 90 ? 'bg-gradient-to-r from-red-500 to-orange-500' :
-                          usagePercentage > 70 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                            'bg-gradient-to-r from-emerald-500 to-teal-500'
+                      className={`h-full rounded-full transition-all duration-500 ${usagePercentage > 90 ? 'bg-red-500' :
+                          usagePercentage > 70 ? 'bg-yellow-500' :
+                            'bg-emerald-500'
                         }`}
                       style={{ width: `${Math.min(usagePercentage, 100)}%` }}
                     />
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>{t[language].aiSummaries}</span>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="text-gray-500">{t[language].aiSummaries}</span>
                     <span className="font-semibold">{usageData.aiUsed}/{usageData.aiLimit}</span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-gray-150 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${aiPercentage > 90 ? 'bg-gradient-to-r from-red-500 to-orange-500' :
-                          aiPercentage > 70 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                            'bg-gradient-to-r from-blue-500 to-cyan-500'
+                      className={`h-full rounded-full transition-all duration-500 ${aiPercentage > 90 ? 'bg-red-500' :
+                          aiPercentage > 70 ? 'bg-yellow-500' :
+                            'bg-emerald-500'
                         }`}
                       style={{ width: `${Math.min(aiPercentage, 100)}%` }}
                     />
@@ -254,44 +248,42 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="backdrop-blur-lg bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-2xl p-5 shadow-lg border border-emerald-200/30">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-emerald-700 dark:text-emerald-300 font-medium">{t[language].weatherStatus}</p>
-                  <p className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">
-                    {weatherData?.current.temp ? `${Math.round(weatherData.current.temp)}°C` : '--'}
-                  </p>
-                </div>
-                <div className="bg-emerald-500/20 p-3 rounded-full">
-                  <CloudSun className="w-8 h-8 text-emerald-600" />
-                </div>
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{t[language].weatherStatus}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+                  {weatherData?.current.temp ? `${Math.round(weatherData.current.temp)}°C` : '--'}
+                </p>
+              </div>
+              <div className="bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-100 dark:border-emerald-900/30">
+                <CloudSun className="w-6 h-6 text-emerald-600" />
               </div>
             </div>
           </div>
         )}
 
         {/* Tab Selection */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex gap-2 mb-6 bg-gray-100 dark:bg-gray-900 p-1 rounded-xl max-w-md border border-gray-200 dark:border-gray-800">
           <button
             onClick={() => setActiveTab('weather')}
-            className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl font-bold shadow-lg transition-all duration-300 ${
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-xs font-semibold transition-all ${
               activeTab === 'weather'
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white scale-[1.02]'
-                : 'bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-200 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-white/20'
+                ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-gray-700'
+                : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
             }`}
           >
-            <CloudSun className="w-5 h-5" />
+            <CloudSun className="w-4 h-4" />
             {t[language].weatherTab}
           </button>
           <button
             onClick={() => setActiveTab('agroforestry')}
-            className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl font-bold shadow-lg transition-all duration-300 ${
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-xs font-semibold transition-all ${
               activeTab === 'agroforestry'
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white scale-[1.02]'
-                : 'bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-200 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-white/20'
+                ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-gray-700'
+                : 'text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
             }`}
           >
-            <Trees className="w-5 h-5" />
+            <Trees className="w-4 h-4" />
             {t[language].agroforestryTab}
           </button>
         </div>
@@ -299,22 +291,22 @@ export default function Home() {
         {activeTab === 'weather' ? (
           <>
             {/* Controls */}
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20 mb-8 flex flex-col md:flex-row gap-4 items-center">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 mb-6 shadow-sm flex flex-col sm:flex-row gap-4 items-center">
               <div className="flex-1 w-full">
                 <LocationSearch />
               </div>
               <button
                 onClick={handleRefresh}
                 disabled={weatherLoading}
-                className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 font-semibold"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all disabled:opacity-50 text-sm font-semibold"
               >
-                <RefreshCw className={`w-4 h-4 ${weatherLoading ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${weatherLoading ? 'animate-spin' : ''}`} />
                 {t[language].refresh}
               </button>
             </div>
 
             {locationError && (
-              <div className="bg-amber-50 border border-amber-200 text-amber-800 px-5 py-3 rounded-xl mb-6 backdrop-blur-sm">
+              <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-2.5 rounded-xl mb-6 text-sm">
                 {locationError}
               </div>
             )}
@@ -349,7 +341,7 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-6">
       {[1, 2].map((i) => (
-        <div key={i} className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-lg animate-pulse">
+        <div key={i} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm animate-pulse">
           <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-lg w-1/3 mb-4"></div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((j) => (
@@ -376,7 +368,6 @@ function buildTranslations() {
     sw: {} as Record<string, string>,
   };
 }
-
 function CurrentWeatherCard({ data, t }: { data: FarmWeatherData; language: Language; t: Translations }) {
   const getWeatherIcon = (temp: number) => {
     if (temp > 30) return <Sun className="w-12 h-12 text-yellow-500" />;
@@ -385,42 +376,42 @@ function CurrentWeatherCard({ data, t }: { data: FarmWeatherData; language: Lang
   };
 
   const metrics = [
-    { icon: Thermometer, label: t.temp, value: `${Math.round(data.current.temp)}°C`, color: 'from-red-500 to-orange-500' },
-    { icon: Droplet, label: t.humidity, value: `${data.current.humidity}%`, color: 'from-blue-500 to-cyan-500' },
-    { icon: Wind, label: t.wind, value: `${data.current.windSpeed} km/h`, color: 'from-teal-500 to-emerald-500' },
-    { icon: CloudRain, label: t.rain, value: `${data.current.rainfall} mm`, color: 'from-indigo-500 to-purple-500' },
-    { icon: Sun, label: t.uv, value: data.current.uvIndex, color: 'from-yellow-500 to-orange-500' },
-    { icon: MapPin, label: t.county, value: data.location.county || 'Kenya', color: 'from-green-500 to-emerald-500' },
+    { icon: Thermometer, label: t.temp, value: `${Math.round(data.current.temp)}°C`, color: 'text-red-500' },
+    { icon: Droplet, label: t.humidity, value: `${data.current.humidity}%`, color: 'text-blue-500' },
+    { icon: Wind, label: t.wind, value: `${data.current.windSpeed} km/h`, color: 'text-teal-500' },
+    { icon: CloudRain, label: t.rain, value: `${data.current.rainfall} mm`, color: 'text-indigo-500' },
+    { icon: Sun, label: t.uv, value: data.current.uvIndex, color: 'text-yellow-500' },
+    { icon: MapPin, label: t.county, value: data.location.county || 'Kenya', color: 'text-green-500' },
   ];
 
   return (
-    <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             {getWeatherIcon(data.current.temp)}
             {t.currentWeather}
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
+          <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">
             {data.location.county || 'Kenya'}, Kenya
           </p>
         </div>
         <div className="text-right">
-          <p className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          <p className="text-3xl font-bold text-emerald-600">
             {Math.round(data.current.temp)}°C
           </p>
-          <p className="text-sm text-gray-500">{t.feelsLike} {Math.round(data.current.temp)}°</p>
+          <p className="text-xs text-gray-400">{t.feelsLike} {Math.round(data.current.temp)}°</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {metrics.map((metric, idx) => (
-          <div key={idx} className="bg-gradient-to-br from-white/50 to-transparent dark:from-gray-900/50 rounded-xl p-3 backdrop-blur-sm">
+          <div key={idx} className="bg-gray-50 dark:bg-gray-950/40 rounded-xl p-3 border border-gray-100 dark:border-gray-900/30">
             <div className="flex items-center gap-2 mb-1">
-              <metric.icon className={`w-4 h-4 bg-gradient-to-r ${metric.color} bg-clip-text text-transparent`} />
-              <span className="text-xs text-gray-600 dark:text-gray-400">{metric.label}</span>
+              <metric.icon className={`w-3.5 h-3.5 ${metric.color}`} />
+              <span className="text-[11px] text-gray-500">{metric.label}</span>
             </div>
-            <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">{metric.value}</p>
+            <p className="text-base font-semibold text-gray-800 dark:text-gray-100">{metric.value}</p>
           </div>
         ))}
       </div>
@@ -430,24 +421,24 @@ function CurrentWeatherCard({ data, t }: { data: FarmWeatherData; language: Lang
 
 function AIAdviceCard({ summary, analysis, t }: { summary: string; analysis: FarmingAnalysis | undefined; language: Language; t: Translations }) {
   const adviceItems = [
-    { icon: Sprout, label: t.planting, key: 'plantingAdvice', color: 'from-green-500 to-emerald-500' },
-    { icon: Droplets, label: t.irrigation, key: 'irrigationAdvice', color: 'from-blue-500 to-cyan-500' },
-    { icon: Scissors, label: t.harvest, key: 'harvestAdvice', color: 'from-yellow-500 to-orange-500' },
-    { icon: Bug, label: t.pestRisk, key: 'pestRisk', color: 'from-red-500 to-pink-500' },
-    { icon: FlaskConical, label: t.fertilizer, key: 'fertilizerAdvice', color: 'from-purple-500 to-indigo-500' },
+    { icon: Sprout, label: t.planting, key: 'plantingAdvice', color: 'bg-emerald-500' },
+    { icon: Droplets, label: t.irrigation, key: 'irrigationAdvice', color: 'bg-blue-500' },
+    { icon: Scissors, label: t.harvest, key: 'harvestAdvice', color: 'bg-yellow-500' },
+    { icon: Bug, label: t.pestRisk, key: 'pestRisk', color: 'bg-red-500' },
+    { icon: FlaskConical, label: t.fertilizer, key: 'fertilizerAdvice', color: 'bg-purple-500' },
   ];
 
   return (
-    <div className="backdrop-blur-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl p-6 shadow-xl border border-emerald-200/30 hover:shadow-2xl transition-all duration-300">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
-        <TrendingUp className="w-6 h-6 text-emerald-600" />
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{t.aiAdvice}</h2>
+        <TrendingUp className="w-5 h-5 text-emerald-600" />
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t.aiAdvice}</h2>
       </div>
 
       {summary && (
-        <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-4 mb-4 backdrop-blur-sm border border-emerald-200/50">
-          <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">{t.aiSummaryLabel}</p>
-          <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{summary}</p>
+        <div className="bg-emerald-50/50 dark:bg-emerald-950/10 rounded-xl p-4 mb-4 border border-emerald-100 dark:border-emerald-900/20">
+          <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider mb-1">{t.aiSummaryLabel}</p>
+          <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed">{summary}</p>
         </div>
       )}
 
@@ -460,7 +451,7 @@ function AIAdviceCard({ summary, analysis, t }: { summary: string; analysis: Far
             }
             return (
               <div key={idx} className="flex items-start gap-3 p-3 bg-white/40 dark:bg-gray-800/40 rounded-xl hover:bg-white/60 transition-all">
-                <div className={`bg-gradient-to-r ${item.color} p-2 rounded-lg`}>
+                <div className={`${item.color} p-2 rounded-lg`}>
                   <item.icon className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1">
@@ -485,29 +476,29 @@ function ForecastCard({ forecast, language, t }: { forecast: FarmWeatherData['fo
   };
 
   return (
-    <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20 mb-8">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm mb-6">
       <div className="flex items-center gap-2 mb-6">
-        <Calendar className="w-6 h-6 text-emerald-600" />
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{t.forecast}</h2>
+        <Calendar className="w-5 h-5 text-emerald-600" />
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t.forecast}</h2>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
         {forecast.map((day, idx) => (
-          <div key={idx} className="bg-gradient-to-b from-white/50 to-transparent dark:from-gray-900/50 rounded-xl p-3 text-center hover:scale-105 transition-all duration-300">
-            <p className="font-semibold text-sm text-gray-800 dark:text-gray-100">{getDayName(day.date)}</p>
-            <p className="text-xs text-gray-500 mb-2">{day.date.slice(5)}</p>
-            <div className="my-2">
+          <div key={idx} className="bg-gray-50 dark:bg-gray-950/40 border border-gray-100 dark:border-gray-900/30 rounded-xl p-3 text-center transition-all">
+            <p className="font-semibold text-xs text-gray-800 dark:text-gray-150">{getDayName(day.date)}</p>
+            <p className="text-[10px] text-gray-400 mb-2">{day.date.slice(5)}</p>
+            <div className="my-2 flex justify-center">
               {day.rainChance > 50 ? (
-                <Umbrella className="w-8 h-8 mx-auto text-blue-500" />
+                <Umbrella className="w-6 h-6 text-blue-500" />
               ) : (
-                <CloudSun className="w-8 h-8 mx-auto text-yellow-500" />
+                <CloudSun className="w-6 h-6 text-yellow-500" />
               )}
             </div>
-            <p className="text-lg font-bold text-gray-800 dark:text-gray-100">{Math.round(day.tempMax)}°</p>
-            <p className="text-xs text-gray-500">{Math.round(day.tempMin)}°</p>
+            <p className="text-base font-bold text-gray-950 dark:text-white">{Math.round(day.tempMax)}°</p>
+            <p className="text-xs text-gray-400">{Math.round(day.tempMin)}°</p>
             <div className="mt-2 flex items-center justify-center gap-1">
               <CloudRain className="w-3 h-3 text-blue-500" />
-              <span className="text-xs font-medium">{day.rainChance}%</span>
+              <span className="text-[10px] font-semibold text-gray-500">{day.rainChance}%</span>
             </div>
           </div>
         ))}
@@ -520,34 +511,34 @@ function FarmingInsightsCard({ analysis, t }: { analysis: FarmingAnalysis; langu
   const crops = Object.entries(analysis.cropRecommendations);
 
   return (
-    <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-6">
-        <Sprout className="w-6 h-6 text-emerald-600" />
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{t.cropRecommendations}</h2>
+        <Sprout className="w-5 h-5 text-emerald-600" />
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t.cropRecommendations}</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {crops.map(([crop, advice]) => (
-          <div key={crop} className="bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-xl p-4 hover:scale-105 transition-all duration-300">
+          <div key={crop} className="bg-gray-50 dark:bg-gray-950/40 border border-gray-100 dark:border-gray-900/30 rounded-xl p-4 transition-all">
             <div className="flex items-center gap-2 mb-2">
-              <Sprout className="w-5 h-5 text-emerald-600" />
-              <h3 className="font-semibold text-gray-800 dark:text-gray-100 capitalize">{crop}</h3>
+              <Sprout className="w-4 h-4 text-emerald-600" />
+              <h3 className="font-semibold text-sm text-gray-900 dark:text-white capitalize">{crop}</h3>
             </div>
-            <p className="text-sm text-gray-700 dark:text-gray-200 leading-relaxed">{advice}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">{advice}</p>
           </div>
         ))}
       </div>
 
       {analysis.riskAlerts.length > 0 && (
-        <div className="bg-gradient-to-r from-red-500/10 to-orange-500/10 rounded-xl p-4 border border-red-200/50">
+        <div className="bg-red-50 dark:bg-red-950/20 rounded-xl p-4 border border-red-200/30">
           <div className="flex items-center gap-2 mb-3">
-            <AlertTriangle className="w-5 h-5 text-red-600" />
-            <h3 className="font-semibold text-red-800 dark:text-red-200">{t.riskAlerts}</h3>
+            <AlertTriangle className="w-4 h-4 text-red-600" />
+            <h3 className="font-semibold text-xs text-red-800 dark:text-red-300 uppercase tracking-wider">{t.riskAlerts}</h3>
           </div>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {analysis.riskAlerts.map((alert, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-sm text-red-700 dark:text-red-300">
-                <ChevronRight className="w-4 h-4 mt-0.5" />
+              <li key={idx} className="flex items-start gap-2 text-xs text-red-700 dark:text-red-300">
+                <ChevronRight className="w-3.5 h-3.5 mt-0.5" />
                 {alert}
               </li>
             ))}

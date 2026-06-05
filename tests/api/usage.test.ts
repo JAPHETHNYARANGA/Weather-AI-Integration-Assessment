@@ -22,9 +22,9 @@ beforeEach(() => {
   delete process.env.WEATHER_API_KEY;
 });
 
-// ===========================================================================
+
 // 1. No API key — zero fallback
-// ===========================================================================
+
 describe('GET /api/usage — no API key', () => {
   it('returns 200 with zeroed usage when no API key is configured', async () => {
     const { status, data } = await callUsage();
@@ -50,9 +50,9 @@ describe('GET /api/usage — no API key', () => {
   });
 });
 
-// ===========================================================================
+
 // 2. Successful API response — data mapping
-// ===========================================================================
+
 describe('GET /api/usage — successful API response', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';
@@ -144,9 +144,9 @@ describe('GET /api/usage — successful API response', () => {
   });
 });
 
-// ===========================================================================
+
 // 3. Non-ok API response — fallback to zeros
-// ===========================================================================
+
 describe('GET /api/usage — non-ok API response', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';
@@ -168,9 +168,9 @@ describe('GET /api/usage — non-ok API response', () => {
   });
 });
 
-// ===========================================================================
+
 // 4. Network error — fallback to zeros
-// ===========================================================================
+
 describe('GET /api/usage — network errors', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';

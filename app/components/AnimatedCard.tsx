@@ -8,7 +8,7 @@ interface AnimatedCardProps {
 export default function AnimatedCard({ children, className }: AnimatedCardProps) {
   return (
     <div
-      className={`bg-white dark:bg-green-900 bg-opacity-30 dark:bg-opacity-30 backdrop-blur-md rounded-xl shadow-lg p-4 transition-transform hover:scale-105 ${className}`}
+      className={`bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm p-4 transition-transform hover:scale-[1.01] ${className}`}
     >
       {children}
     </div>

@@ -8,9 +8,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from '../../app/api/weather/route';
 
-// ---------------------------------------------------------------------------
+
 // Helper: construct a Request with query params
-// ---------------------------------------------------------------------------
+
 const makeRequest = (params: Record<string, string> = {}) => {
   const url = new URL('http://localhost/api/weather');
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
@@ -22,9 +22,9 @@ async function callWeather(params: Record<string, string> = {}) {
   return { status: res.status, data: await res.json() };
 }
 
-// ---------------------------------------------------------------------------
+
 // Mock fetch globally
-// ---------------------------------------------------------------------------
+
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
 
@@ -33,9 +33,9 @@ beforeEach(() => {
   delete process.env.WEATHER_API_KEY;
 });
 
-// ===========================================================================
+
 // 1. Input validation
-// ===========================================================================
+
 describe('GET /api/weather — input validation', () => {
   it('returns 400 when lat is missing', async () => {
     const { status, data } = await callWeather({ lon: '36.8219' });
@@ -55,9 +55,9 @@ describe('GET /api/weather — input validation', () => {
   });
 });
 
-// ===========================================================================
+
 // 2. Demo data fallback (no API key)
-// ===========================================================================
+
 describe('GET /api/weather — demo data fallback', () => {
   it('returns demo data when no WEATHER_API_KEY is set', async () => {
     const { status, data } = await callWeather({ lat: '-1.2921', lon: '36.8219' });
@@ -110,9 +110,9 @@ describe('GET /api/weather — demo data fallback', () => {
   });
 });
 
-// ===========================================================================
+
 // 3. Live API path (API key present)
-// ===========================================================================
+
 describe('GET /api/weather — live API path', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';
@@ -173,9 +173,9 @@ describe('GET /api/weather — live API path', () => {
   });
 });
 
-// ===========================================================================
+
 // 4. WMO weather condition code mapping
-// ===========================================================================
+
 describe('GET /api/weather — WMO condition code mapping (via API response)', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';
@@ -212,9 +212,9 @@ describe('GET /api/weather — WMO condition code mapping (via API response)', (
   });
 });
 
-// ===========================================================================
+
 // 5. AI summary generation
-// ===========================================================================
+
 describe('GET /api/weather — local AI summary fallback', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';

@@ -1,10 +1,10 @@
-# 🌾 Weather AI Farming Assistant
+#  Weather AI Farming Assistant
 
 An AI-powered weather and farming advisory application built for Kenyan farmers. It provides real-time weather data, a 7-day forecast, crop recommendations, and agricultural advice — all backed by the [Weather AI API](https://weather-ai.co), with full English and Kiswahili support.
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -23,16 +23,16 @@ An AI-powered weather and farming advisory application built for Kenyan farmers.
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🌤️ **Real-time weather** — current conditions fetched live from Weather AI API
-- 📅 **7-day forecast** — daily high/low temperatures and rain probability
-- 🤖 **AI farming advice** — planting, irrigation, harvesting, pest risk, and fertilizer timing
-- 🌱 **Crop recommendations** — science-based suitability for regional crops based on current climate
-- 📊 **API usage dashboard** — live tracking of Weather API and AI Summary usage against plan limits
-- 🔍 **Location search** — OpenStreetMap-powered autocomplete for any Kenyan city or town
-- 📍 **Geolocation** — one-click "Use My Location" via browser GPS
-- 🌐 **Bilingual** — full English and Kiswahili interface
+-  **Real-time weather** — current conditions fetched live from Weather AI API
+-  **7-day forecast** — daily high/low temperatures and rain probability
+-  **AI farming advice** — planting, irrigation, harvesting, pest risk, and fertilizer timing
+-  **Crop recommendations** — science-based suitability for regional crops based on current climate
+-  **API usage dashboard** — live tracking of Weather API and AI Summary usage against plan limits
+-  **Location search** — OpenStreetMap-powered autocomplete for any Kenyan city or town
+-  **Geolocation** — one-click "Use My Location" via browser GPS
+-  **Bilingual** — full English and Kiswahili interface
 
 ---
 
@@ -50,7 +50,7 @@ An AI-powered weather and farming advisory application built for Kenyan farmers.
 
 ---
 
-## ✅ Prerequisites
+##  Prerequisites
 
 Before you begin, make sure you have the following installed:
 
@@ -144,7 +144,7 @@ npm run lint
 
 ---
 
-## 🗂 Project Structure
+##  Project Structure
 
 ```
 weather-ai-assesment/
@@ -176,7 +176,7 @@ weather-ai-assesment/
 
 ---
 
-## 🔌 API Routes
+##  API Routes
 
 All routes live under `app/api/` and run entirely on the server, keeping your API key secret from the browser.
 
@@ -189,7 +189,7 @@ All routes live under `app/api/` and run entirely on the server, keeping your AP
 
 ---
 
-## 🔑 Environment Variables Reference
+##  Environment Variables Reference
 
 | Variable | Required | Description |
 |---|---|---|
@@ -199,7 +199,7 @@ No other environment variables are required. The Nominatim geocoding API is free
 
 ---
 
-## 🌐 Getting a Weather AI API Key
+##  Getting a Weather AI API Key
 
 1. Visit **[https://weather-ai.co](https://weather-ai.co)** and create an account.
 2. Navigate to your **Dashboard → API Keys**.
@@ -214,11 +214,11 @@ The app's dashboard displays your live usage against these limits.
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 The application uses **[Vitest](https://vitest.dev/)** as the test runner for its API route unit tests.
 
-### 📁 Test Structure
+###  Test Structure
 
 The tests are located in the `tests/` directory:
 
@@ -228,7 +228,7 @@ The tests are located in the `tests/` directory:
 - `tests/api/analyze.test.ts` — AI farming analysis route tests (Kiswahili localization, planting/irrigation/harvest rules, temperature warnings, etc.)
 - `tests/api/usage.test.ts` — Usage endpoint tests (resilience to third-party outages, rate limits)
 
-### 🏃 Running the Tests
+###  Running the Tests
 
 You can run the tests using the following commands:
 
@@ -251,6 +251,6 @@ The coverage report will show file-by-file statements, branches, functions, and 
 
 ---
 
-## 📄 License
+##  License
 
 This project was created as part of the **Weather AI Integration Assessment**.

@@ -68,7 +68,7 @@ export default function LocationSearch() {
         <button
           onClick={handleGeolocation}
           disabled={loading}
-          className="flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 transition-all duration-300 disabled:opacity-50"
+          className="flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 dark:bg-emerald-700 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 transition-all duration-300 disabled:opacity-50"
         >
           <LocateFixed className="w-5 h-5" />
           {loading ? 'Locating...' : 'Use My Location'}

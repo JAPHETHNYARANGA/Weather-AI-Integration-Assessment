@@ -1,16 +1,9 @@
 /**
  * Tests for /api/analyze — POST route
- *
- * Strategy: import the route handler directly and construct Request objects.
- * The `next/server` module is mocked in tests/setup.ts so NextResponse.json
- * returns a plain object with { status, json() } instead of a real Response.
  */
 import { describe, it, expect, vi } from 'vitest';
 import { POST } from '../../app/api/analyze/route';
 
-// ---------------------------------------------------------------------------
-// Shared fixtures
-// ---------------------------------------------------------------------------
 
 /** A single forecast day with sensible defaults */
 const makeDay = (overrides: Partial<{
@@ -61,17 +54,14 @@ const makeRequest = (body: object) =>
     body: JSON.stringify(body),
   });
 
-// ---------------------------------------------------------------------------
 // Helper: call handler and extract JSON response body
-// ---------------------------------------------------------------------------
+
 async function callAnalyze(body: object) {
   const res = await POST(makeRequest(body)) as any;
   return { status: res.status, data: await res.json() };
 }
 
-// ===========================================================================
 // 1. Input validation
-// ===========================================================================
 describe('POST /api/analyze — input validation', () => {
   it('returns 400 when weatherData is missing', async () => {
     const { status, data } = await callAnalyze({});
@@ -85,9 +75,8 @@ describe('POST /api/analyze — input validation', () => {
   });
 });
 
-// ===========================================================================
 // 2. Response shape
-// ===========================================================================
+
 describe('POST /api/analyze — response shape', () => {
   it('returns all expected top-level keys', async () => {
     const { status, data } = await callAnalyze({ weatherData: makeWeatherData() });
@@ -125,9 +114,9 @@ describe('POST /api/analyze — response shape', () => {
   });
 });
 
-// ===========================================================================
+
 // 3. Planting advice logic
-// ===========================================================================
+
 describe('POST /api/analyze — planting advice', () => {
   it('returns cold planting warning when avgTemp < 12', async () => {
     const wd = makeWeatherData({}, 7, { tempMax: 10, tempMin: 5 });
@@ -154,9 +143,9 @@ describe('POST /api/analyze — planting advice', () => {
   });
 });
 
-// ===========================================================================
+
 // 4. Irrigation advice logic
-// ===========================================================================
+
 describe('POST /api/analyze — irrigation advice', () => {
   it('advises reducing irrigation when significant rain expected in 3 days', async () => {
     const days = Array.from({ length: 7 }, (_, i) =>
@@ -174,9 +163,8 @@ describe('POST /api/analyze — irrigation advice', () => {
   });
 });
 
-// ===========================================================================
 // 5. Harvest advice logic
-// ===========================================================================
+
 describe('POST /api/analyze — harvest advice', () => {
   it('warns to delay harvest when rain expected in next 2 days', async () => {
     const days = Array.from({ length: 7 }, (_, i) =>
@@ -194,9 +182,8 @@ describe('POST /api/analyze — harvest advice', () => {
   });
 });
 
-// ===========================================================================
 // 6. Pest risk logic
-// ===========================================================================
+
 describe('POST /api/analyze — pest risk', () => {
   it('returns HIGH pest risk when humidity > 70% and avgTemp > 20°C', async () => {
     const wd = makeWeatherData({ humidity: 80 }, 7, { tempMax: 26, tempMin: 22 });
@@ -211,9 +198,8 @@ describe('POST /api/analyze — pest risk', () => {
   });
 });
 
-// ===========================================================================
 // 7. Fertilizer advice logic
-// ===========================================================================
+
 describe('POST /api/analyze — fertilizer advice', () => {
   it('advises delaying fertilizer when heavy rain (≥15mm) is forecast', async () => {
     const wd = makeWeatherData({}, 7, { rainfall: 20 });
@@ -228,9 +214,8 @@ describe('POST /api/analyze — fertilizer advice', () => {
   });
 });
 
-// ===========================================================================
 // 8. Risk alerts
-// ===========================================================================
+
 describe('POST /api/analyze — risk alerts', () => {
   it('issues frost alert when tempMin < 6°C', async () => {
     const wd = makeWeatherData({}, 7, { tempMin: 3 });
@@ -262,9 +247,9 @@ describe('POST /api/analyze — risk alerts', () => {
   });
 });
 
-// ===========================================================================
+
 // 9. Temperature trend calculation
-// ===========================================================================
+
 describe('POST /api/analyze — temperature trend', () => {
   it('detects warming trend', async () => {
     const days = [
@@ -303,9 +288,8 @@ describe('POST /api/analyze — temperature trend', () => {
   });
 });
 
-// ===========================================================================
 // 10. Drought & flood risk flags
-// ===========================================================================
+
 describe('POST /api/analyze — drought and flood risk', () => {
   it('sets droughtRisk=true when all forecast days have < 5mm rainfall', async () => {
     const wd = makeWeatherData({}, 7, { rainfall: 0 });
@@ -332,9 +316,8 @@ describe('POST /api/analyze — drought and flood risk', () => {
   });
 });
 
-// ===========================================================================
+
 // 11. Swahili localisation
-// ===========================================================================
 describe('POST /api/analyze — Swahili localisation (lang=sw)', () => {
   it('returns Swahili crop keys instead of English', async () => {
     const { data } = await callAnalyze({ weatherData: makeWeatherData(), lang: 'sw' });
@@ -361,9 +344,9 @@ describe('POST /api/analyze — Swahili localisation (lang=sw)', () => {
   });
 });
 
-// ===========================================================================
+
 // 12. Optimal planting & harvesting windows
-// ===========================================================================
+
 describe('POST /api/analyze — planting and harvesting windows', () => {
   it('identifies optimal planting days (15–28°C avg, rainChance ≥ 20%)', async () => {
     const days = [

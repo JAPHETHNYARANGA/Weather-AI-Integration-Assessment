@@ -8,15 +8,12 @@ import {
   FileImage,
   Layers,
   MapPin,
-  FileText,
-  User,
   Trees,
   CheckCircle,
   AlertTriangle,
   XCircle,
   HelpCircle,
   Eye,
-  Info
 } from 'lucide-react';
 
 interface AgroforestryAnalysisProps {
@@ -30,13 +27,6 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<TreeAnalysisResult | null>(null);
 
-  // Form states
-  const [farmerId, setFarmerId] = useState('');
-  const [county, setCounty] = useState('');
-  const [landAcres, setLandAcres] = useState('');
-  const [locationName, setLocationName] = useState('');
-  const [notes, setNotes] = useState('');
-
   // Image tab selector
   const [activeImageTab, setActiveImageTab] = useState<'overlay' | 'original'>('overlay');
 
@@ -47,12 +37,6 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
       uploadTitle: 'Upload Farm Image',
       dragDropText: 'Drag and drop your image here, or click to browse',
       supportedFormats: 'Supports JPEG, PNG, WEBP (Max 20MB)',
-      farmerId: 'Farmer ID (Optional)',
-      county: 'County / Region (Optional)',
-      landAcres: 'Land Area in Acres (Optional)',
-      locationName: 'Location / GPS Details (Optional)',
-      notes: 'Notes / Context (Optional)',
-      notesPlaceholder: 'e.g., Tea plantation, recently pruned...',
       analyzeBtn: 'Analyze Farm Image',
       analyzing: 'Processing image & running AI analysis...',
       results: 'Analysis Results',
@@ -85,12 +69,6 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
       uploadTitle: 'Pakia Picha ya Shamba',
       dragDropText: 'Buruta na udondoshe picha yako hapa, au bonyeza ili kuvinjari',
       supportedFormats: 'Inakubali JPEG, PNG, WEBP (Upeo wa 20MB)',
-      farmerId: 'Kitambulisho cha Mkulima (Hiari)',
-      county: 'Kaunti / Mkoa (Hiari)',
-      landAcres: 'Ukubwa wa Ardhi kwa Ekari (Hiari)',
-      locationName: 'Eneo / Maelezo ya GPS (Hiari)',
-      notes: 'Maelezo / Muktadha (Hiari)',
-      notesPlaceholder: 'mf. Shamba la chai, limepunguzwa matawi hivi karibuni...',
       analyzeBtn: 'Chambua Picha ya Shamba',
       analyzing: 'Inapita picha na kufanya uchambuzi wa AI...',
       results: 'Matokeo ya Uchambuzi',
@@ -159,11 +137,6 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
 
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('farmerId', farmerId);
-    formData.append('county', county);
-    formData.append('landAcres', landAcres);
-    formData.append('location', locationName);
-    formData.append('notes', notes);
 
     try {
       const response = await fetch('/api/trees/analyze', {
@@ -188,36 +161,30 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
   const handleReset = () => {
     setResult(null);
     setFile(null);
-    setFarmerId('');
-    setCounty('');
-    setLandAcres('');
-    setLocationName('');
-    setNotes('');
   };
 
   return (
     <div className="space-y-6">
-      <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20">
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm">
         <div className="flex items-center gap-3 mb-2">
-          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-3 rounded-2xl shadow-lg">
+          <div className="bg-emerald-600 p-2.5 rounded-lg">
             <Trees className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{t.title}</h2>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">{t.subtitle}</p>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t.title}</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">{t.subtitle}</p>
           </div>
         </div>
       </div>
 
       {!result ? (
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
             <div
-              className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 backdrop-blur-md bg-white/40 dark:bg-gray-800/40 min-h-[300px] ${
+              className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 bg-white dark:bg-gray-900 min-h-[300px] ${
                 dragActive
-                  ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/10 scale-[0.99]'
+                  ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 scale-[0.99]'
                   : file
-                  ? 'border-emerald-500/70'
+                  ? 'border-emerald-500'
                   : 'border-gray-300 dark:border-gray-700 hover:border-emerald-500'
               }`}
               onDragEnter={handleDrag}
@@ -235,7 +202,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
               
               {!file ? (
                 <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center">
-                  <div className="bg-gradient-to-br from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/20 dark:to-teal-500/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform">
+                  <div className="bg-emerald-500/10 dark:bg-emerald-500/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform">
                     <Upload className="w-10 h-10 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <p className="text-base font-semibold text-gray-700 dark:text-gray-200 mb-1">
@@ -280,117 +247,26 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
             <button
               type="submit"
               disabled={loading || !file}
-              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
-                  <Activity className="w-6 h-6 animate-spin" />
+                  <Activity className="w-5 h-5 animate-spin" />
                   {t.analyzing}
                 </>
               ) : (
                 <>
-                  <Trees className="w-6 h-6" />
+                  <Trees className="w-5 h-5" />
                   {t.analyzeBtn}
                 </>
               )}
             </button>
-          </div>
-
-          <div className="backdrop-blur-lg bg-white/50 dark:bg-gray-800/50 rounded-2xl p-6 shadow-xl border border-white/20 space-y-4">
-            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-              <Info className="w-5 h-5 text-emerald-600" />
-              Meta Parameters
-            </h3>
-            
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                  {t.farmerId}
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    value={farmerId}
-                    onChange={(e) => setFarmerId(e.target.value)}
-                    placeholder="e.g. F-001"
-                    className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-950/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-gray-800 dark:text-gray-100"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                  {t.county}
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    value={county}
-                    onChange={(e) => setCounty(e.target.value)}
-                    placeholder="e.g. Bomet"
-                    className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-950/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-gray-800 dark:text-gray-100"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                  {t.landAcres}
-                </label>
-                <div className="relative">
-                  <Layers className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={landAcres}
-                    onChange={(e) => setLandAcres(e.target.value)}
-                    placeholder="e.g. 2.5"
-                    className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-950/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-gray-800 dark:text-gray-100"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                  {t.locationName}
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    value={locationName}
-                    onChange={(e) => setLocationName(e.target.value)}
-                    placeholder="e.g. Kapkimolwa Farm"
-                    className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-950/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-gray-800 dark:text-gray-100"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 block mb-1">
-                  {t.notes}
-                </label>
-                <div className="relative">
-                  <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <textarea
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    placeholder={t.notesPlaceholder}
-                    rows={3}
-                    className="w-full pl-9 pr-4 py-2 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-950/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-gray-800 dark:text-gray-100"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </form>
       ) : (
         <div className="space-y-6 animate-fadeIn">
           {/* Main Stats Header */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase">{t.totalTrees}</p>
                 <h3 className="text-3xl font-extrabold text-emerald-700 dark:text-emerald-400 mt-1">
@@ -402,7 +278,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
               </div>
             </div>
 
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase">{t.density}</p>
                 <h3 className="text-3xl font-extrabold text-blue-700 dark:text-blue-400 mt-1">
@@ -415,7 +291,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
               </div>
             </div>
 
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase">{t.canopy}</p>
                 <h3 className="text-3xl font-extrabold text-teal-700 dark:text-teal-400 mt-1">
@@ -427,7 +303,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
               </div>
             </div>
 
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-lg border border-white/20 flex items-center justify-between">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase">{t.confidence}</p>
                 <h3 className="text-3xl font-extrabold text-purple-700 dark:text-purple-400 mt-1">
@@ -441,7 +317,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
           </div>
 
           {/* Species and Location Card */}
-          <div className="backdrop-blur-lg bg-emerald-500/10 rounded-2xl p-5 border border-emerald-200/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-xl p-5 border border-emerald-200 dark:border-emerald-900/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase">
                 {t.species}
@@ -450,7 +326,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
                 {result.tree_species_guess}
               </h4>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 bg-white/50 dark:bg-gray-900/50 px-4 py-2 rounded-xl border border-white/20">
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-800">
               <MapPin className="w-4 h-4 text-emerald-600" />
               <span>
                 {result.location}, {result.county}
@@ -460,7 +336,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Visual CV Image & Overlay View */}
-            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-xl border border-white/20 flex flex-col">
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm flex flex-col">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100 flex items-center gap-2">
                   <Eye className="w-5 h-5 text-emerald-600" />
@@ -513,7 +389,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
             {/* Health Breakdown & AI Recommendations */}
             <div className="space-y-6">
               {/* Health Breakdown */}
-              <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-5 shadow-xl border border-white/20 space-y-4">
+              <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 shadow-sm space-y-4">
                 <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100 flex items-center gap-2">
                   <Activity className="w-5 h-5 text-emerald-600" />
                   {t.healthBreakdown}
@@ -574,7 +450,7 @@ export default function AgroforestryAnalysis({ language }: AgroforestryAnalysisP
               </div>
 
               {/* AI Recommendations */}
-              <div className="backdrop-blur-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl p-5 shadow-xl border border-emerald-200/30 space-y-4">
+              <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-xl p-5 border border-emerald-200 dark:border-emerald-900/30 space-y-4">
                 <div>
                   <h4 className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider mb-2">
                     {t.observations}

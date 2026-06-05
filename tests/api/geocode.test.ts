@@ -1,15 +1,13 @@
 /**
  * Tests for /api/geocode — GET route
  *
- * Covers: input validation, built-in city lookup, unknown city fallback,
- * case-insensitive matching, and live API path.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from '../../app/api/geocode/route';
 
-// ---------------------------------------------------------------------------
+
 // Helper: construct a Request with query params
-// ---------------------------------------------------------------------------
+
 const makeRequest = (params: Record<string, string> = {}) => {
   const url = new URL('http://localhost/api/geocode');
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
@@ -29,9 +27,9 @@ beforeEach(() => {
   delete process.env.WEATHER_API_KEY;
 });
 
-// ===========================================================================
+
 // 1. Input validation
-// ===========================================================================
+
 describe('GET /api/geocode — input validation', () => {
   it('returns 400 when city param is missing', async () => {
     const { status, data } = await callGeocode({});
@@ -45,9 +43,8 @@ describe('GET /api/geocode — input validation', () => {
   });
 });
 
-// ===========================================================================
 // 2. Built-in city lookup (CITY_COORDS)
-// ===========================================================================
+
 describe('GET /api/geocode — built-in city lookup', () => {
   const knownCities: Array<[string, number, number]> = [
     ['nairobi',  -1.2921, 36.8219],
@@ -72,9 +69,9 @@ describe('GET /api/geocode — built-in city lookup', () => {
   });
 });
 
-// ===========================================================================
+
 // 3. Case-insensitive & whitespace trimming
-// ===========================================================================
+
 describe('GET /api/geocode — case and whitespace handling', () => {
   it('resolves "Nairobi" (title case)', async () => {
     const { data } = await callGeocode({ city: 'Nairobi' });
@@ -92,9 +89,9 @@ describe('GET /api/geocode — case and whitespace handling', () => {
   });
 });
 
-// ===========================================================================
+
 // 4. Unknown city — fallback to Nairobi defaults
-// ===========================================================================
+
 describe('GET /api/geocode — unknown city fallback', () => {
   it('returns Nairobi coords when city is unknown and no API key', async () => {
     const { status, data } = await callGeocode({ city: 'atlantis' });
@@ -104,9 +101,9 @@ describe('GET /api/geocode — unknown city fallback', () => {
   });
 });
 
-// ===========================================================================
+
 // 5. Live API path (with API key, unknown city)
-// ===========================================================================
+
 describe('GET /api/geocode — live IP-lookup path', () => {
   beforeEach(() => {
     process.env.WEATHER_API_KEY = 'wai_test_key';
