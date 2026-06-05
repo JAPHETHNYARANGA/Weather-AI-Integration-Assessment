@@ -8,12 +8,7 @@ export default function Header() {
       <h1 className="text-2xl font-bold text-green-800 dark:text-green-200">
         Weather AI Farming Assistant
       </h1>
-      <div className="flex items-center gap-3">
-        <Link href="/select-location" className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">
-          Pick Location on Map
-        </Link>
         <ThemeToggle />
-      </div>
     </header>
   );
 }

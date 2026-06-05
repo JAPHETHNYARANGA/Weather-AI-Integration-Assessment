@@ -69,6 +69,39 @@ function getDemoWeatherData(lat: string, lon: string): WeatherResponse {
   };
 }
 
+function getWmoCondition(code: string | number | undefined): string {
+  if (code === undefined || code === null) return 'Partly Cloudy';
+  const c = Number(code);
+  if (c === 0) return 'Clear Sky';
+  if (c === 1) return 'Mainly Clear';
+  if (c === 2) return 'Partly Cloudy';
+  if (c === 3) return 'Overcast';
+  if (c === 45 || c === 48) return 'Foggy';
+  if (c >= 51 && c <= 55) return 'Drizzle';
+  if (c >= 61 && c <= 65) return 'Rainy';
+  if (c >= 71 && c <= 75) return 'Snowy';
+  if (c >= 80 && c <= 82) return 'Rain showers';
+  if (c >= 95 && c <= 99) return 'Thunderstorm';
+  return 'Partly Cloudy';
+}
+
+function generateLocalAiSummary(currentTemp: number, rainfall: number, condition: string): string {
+  let advice = '';
+  if (rainfall > 10) {
+    advice += 'Significant rainfall detected. Perfect time for soil moisture replenishment. Avoid applying spray treatments to crops to prevent runoff.';
+  } else if (rainfall > 0) {
+    advice += 'Light rain expected. Good moisture levels, but monitor crops for fungal growth and ensure proper drainage.';
+  } else {
+    advice += 'Dry conditions prevail. Focus on weeding, mulching, and setting up irrigation schedules to protect crops from heat stress.';
+  }
+  if (currentTemp > 28) {
+    advice += ' High temperatures may stress young seedlings; consider providing light shade and watering in the early morning or evening.';
+  } else if (currentTemp < 15) {
+    advice += ' Cool weather might slow down maize and tomato germination. Consider focusing on cold-hardy crops.';
+  }
+  return advice || 'Favorable conditions overall. Monitor soil moisture levels and inspect for pests weekly.';
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -102,40 +135,66 @@ export async function GET(request: Request) {
 
     const data = await response.json();
 
-    if (!data.current || !data.forecast?.length) {
+    if (!data.current || (!data.daily?.length && !data.forecast?.length)) {
       return NextResponse.json(getDemoWeatherData(lat, lon));
     }
 
+    // Determine the source of daily/forecast list
+    const dailyForecasts = data.daily || data.forecast || [];
+    const firstHourly = data.hourly?.[0] || {};
+    const firstDaily = dailyForecasts[0] || {};
+
+    // Reverse geocode using Nominatim to get actual county/city name
+    let county = 'Kenya';
+    try {
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`,
+        { headers: { 'User-Agent': 'Weather-AI-Farming-Assistant' } }
+      );
+      if (geoRes.ok) {
+        const geoData = await geoRes.json();
+        const address = geoData.address || {};
+        county = address.county || address.city || address.town || address.suburb || address.village || 'Kenya';
+      }
+    } catch (e) {
+      console.error('Reverse geocode failed:', e);
+    }
+
+    const currentTemp = data.current.temperature ?? data.current.temp ?? 24;
+    const currentRainfall = firstDaily.precipitation_sum ?? data.current.rainfall ?? 0;
+    const conditionText = getWmoCondition(data.current.condition_code ?? data.current.condition);
+
     const transformedData: WeatherResponse = {
       current: {
-        temp: data.current.temp ?? 24,
-        humidity: data.current.humidity ?? 70,
-        windSpeed: data.current.wind_speed ?? 10,
-        rainfall: data.current.rainfall ?? 0,
-        uvIndex: data.current.uv_index ?? 6,
-        condition: data.current.condition ?? 'Partly Cloudy',
+        temp: currentTemp,
+        humidity: firstHourly.humidity ?? data.current.humidity ?? 70,
+        windSpeed: data.current.wind_speed ?? data.current.windSpeed ?? 10,
+        rainfall: currentRainfall,
+        uvIndex: firstHourly.uv_index ?? data.current.uvIndex ?? 6,
+        condition: conditionText,
       },
-      forecast: data.forecast.map((day: ApiForecastDay) => {
+      forecast: dailyForecasts.map((day: any) => {
         return {
           date: day.date,
-          tempMax: day.temp_max ?? 22,
-          tempMin: day.temp_min ?? 15,
-          rainChance: day.rain_chance ?? 30,
-          rainfall: day.rainfall ?? 5,
+          tempMax: day.temp_max ?? day.tempMax ?? 22,
+          tempMin: day.temp_min ?? day.tempMin ?? 15,
+          rainChance: day.precipitation_probability ?? day.rainChance ?? day.rain_chance ?? 30,
+          rainfall: day.precipitation_sum ?? day.rainfall ?? 5,
           humidity: day.humidity ?? 65,
-          condition: day.condition ?? 'Partly Cloudy',
+          condition: getWmoCondition(day.condition_code ?? day.condition),
         };
       }),
-      aiSummary: data.ai_summary ?? 'Good conditions for farming activities.',
+      aiSummary: data.ai_summary ?? generateLocalAiSummary(currentTemp, currentRainfall, conditionText),
       location: {
         lat: parseFloat(lat),
         lon: parseFloat(lon),
-        county: data.location?.county,
+        county: county,
       },
     };
 
     return NextResponse.json(transformedData);
-  } catch {
+  } catch (error) {
+    console.error('Weather route error:', error);
     const url = new URL(request.url);
     const lat = url.searchParams.get('lat') || '-1.2921';
     const lon = url.searchParams.get('lon') || '36.8219';

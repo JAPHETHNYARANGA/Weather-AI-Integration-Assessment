@@ -33,11 +33,11 @@ export async function GET() {
     const data = await response.json();
 
     return NextResponse.json({
-      requestsUsed: data.requests_used ?? 0,
-      requestsLimit: data.requests_limit ?? 1000,
-      aiUsed: data.ai_used ?? 0,
-      aiLimit: data.ai_limit ?? 200,
-      resetDate: data.reset_date ?? new Date().toISOString(),
+      requestsUsed: data.period?.requestCount ?? 0,
+      requestsLimit: data.limits?.requests ?? 1000,
+      aiUsed: data.period?.aiRequestCount ?? 0,
+      aiLimit: data.limits?.aiRequests ?? 200,
+      resetDate: data.period?.end ?? new Date().toISOString(),
     });
   } catch {
     return NextResponse.json({

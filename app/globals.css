@@ -38,6 +38,13 @@
   --glass-bg-dark: rgba(0, 0, 0, 0.24);
   --glass-border-light: rgba(255, 255, 255, 0.18);
   --glass-border-dark: rgba(255, 255, 255, 0.12);
+
+  /* Default fallbacks */
+  --color-bg: var(--color-bg-light);
+  --color-surface: var(--color-surface-light);
+  --color-text: var(--color-text-light);
+  --glass-bg: var(--glass-bg-light);
+  --glass-border: var(--glass-border-light);
 }
 
 [data-theme="dark"] {
