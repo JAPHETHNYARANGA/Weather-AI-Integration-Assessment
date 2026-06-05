@@ -36,7 +36,7 @@ An AI-powered weather and farming advisory application built for Kenyan farmers.
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -67,7 +67,7 @@ npm -v
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the Repository
 
@@ -193,7 +193,7 @@ All routes live under `app/api/` and run entirely on the server, keeping your AP
 
 | Variable | Required | Description |
 |---|---|---|
-| `WEATHER_API_KEY` | ✅ Yes | Your Weather AI API key from [weather-ai.co](https://weather-ai.co) |
+| `WEATHER_API_KEY` |  Yes | Your Weather AI API key from [weather-ai.co](https://weather-ai.co) |
 
 No other environment variables are required. The Nominatim geocoding API is free and requires no key.
 
@@ -250,6 +250,11 @@ npm run test:coverage
 The coverage report will show file-by-file statements, branches, functions, and line coverage directly in the terminal, and output a detailed HTML report to `coverage/index.html`.
 
 ---
+
+## Screenshots
+![alt text](<Screenshot 2026-06-05 at 10.31.37 AM.png>)
+![alt text](<Screenshot 2026-06-05 at 10.31.22 AM.png>)
+![alt text](<Screenshot 2026-06-05 at 10.31.12 AM.png>)
 
 ##  License
 
