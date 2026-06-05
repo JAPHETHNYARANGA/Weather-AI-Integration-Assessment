@@ -29,13 +29,16 @@ import {
   CloudSun,
   Umbrella,
   Eye,
-  Gauge
+  Gauge,
+  Trees
 } from 'lucide-react';
+import AgroforestryAnalysis from './components/AgroforestryAnalysis';
 
 const NAVROBO_LATLON: [number, number] = [-1.2921, 36.8219];
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
+  const [activeTab, setActiveTab] = useState<'weather' | 'agroforestry'>('weather');
   const { location, error: locationError } = useLocation();
   const queryClient = useQueryClient();
 
@@ -109,6 +112,8 @@ export default function Home() {
       riskAlerts: 'Risk Alerts',
       errorLoading: 'Error loading weather data. Please check your API key configuration.',
       retry: 'Retry',
+      weatherTab: 'Weather & Crops',
+      agroforestryTab: 'Agroforestry (Trees)',
     },
     sw: {
       title: 'Weather AI Msaidizi wa Kilimo',
@@ -142,6 +147,8 @@ export default function Home() {
       riskAlerts: 'Onyo za Hatari',
       errorLoading: 'Hitilafu kupakia data ya hewa. Tafadhali angalia usanidi wa API key yako.',
       retry: 'Jaribu Tena',
+      weatherTab: 'Hewa na Mazao',
+      agroforestryTab: 'Misitu ya Kilimo (Miti)',
     },
   };
 
@@ -263,44 +270,76 @@ export default function Home() {
           </div>
         )}
 
-        {/* Controls */}
-        <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20 mb-8 flex flex-col md:flex-row gap-4 items-center">
-          <div className="flex-1 w-full">
-            <LocationSearch />
-          </div>
+        {/* Tab Selection */}
+        <div className="flex gap-4 mb-8">
           <button
-            onClick={handleRefresh}
-            disabled={weatherLoading}
-            className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 font-semibold"
+            onClick={() => setActiveTab('weather')}
+            className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl font-bold shadow-lg transition-all duration-300 ${
+              activeTab === 'weather'
+                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white scale-[1.02]'
+                : 'bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-200 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-white/20'
+            }`}
           >
-            <RefreshCw className={`w-4 h-4 ${weatherLoading ? 'animate-spin' : ''}`} />
-            {t[language].refresh}
+            <CloudSun className="w-5 h-5" />
+            {t[language].weatherTab}
+          </button>
+          <button
+            onClick={() => setActiveTab('agroforestry')}
+            className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl font-bold shadow-lg transition-all duration-300 ${
+              activeTab === 'agroforestry'
+                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white scale-[1.02]'
+                : 'bg-white/60 dark:bg-gray-800/60 text-gray-700 dark:text-gray-200 hover:bg-white/80 dark:hover:bg-gray-800/80 border border-white/20'
+            }`}
+          >
+            <Trees className="w-5 h-5" />
+            {t[language].agroforestryTab}
           </button>
         </div>
 
-        {locationError && (
-          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-5 py-3 rounded-xl mb-6 backdrop-blur-sm">
-            {locationError}
-          </div>
-        )}
-
-        {weatherLoading && !weatherData ? (
-          <LoadingSkeleton />
-        ) : weatherError ? (
-          <div className="bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl mb-6">
-            {t[language].errorLoading}
-            <button onClick={handleRefresh} className="ml-3 underline font-semibold">{t[language].retry}</button>
-          </div>
-        ) : weatherData ? (
+        {activeTab === 'weather' ? (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <CurrentWeatherCard data={weatherData} language={language} t={t[language]} />
-              <AIAdviceCard summary={weatherData.aiSummary} analysis={analysis} language={language} t={t[language]} />
+            {/* Controls */}
+            <div className="backdrop-blur-lg bg-white/60 dark:bg-gray-800/60 rounded-2xl p-6 shadow-xl border border-white/20 mb-8 flex flex-col md:flex-row gap-4 items-center">
+              <div className="flex-1 w-full">
+                <LocationSearch />
+              </div>
+              <button
+                onClick={handleRefresh}
+                disabled={weatherLoading}
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 font-semibold"
+              >
+                <RefreshCw className={`w-4 h-4 ${weatherLoading ? 'animate-spin' : ''}`} />
+                {t[language].refresh}
+              </button>
             </div>
-            <ForecastCard forecast={weatherData.forecast} language={language} t={t[language]} />
-            {analysis && <FarmingInsightsCard analysis={analysis} language={language} t={t[language]} />}
+
+            {locationError && (
+              <div className="bg-amber-50 border border-amber-200 text-amber-800 px-5 py-3 rounded-xl mb-6 backdrop-blur-sm">
+                {locationError}
+              </div>
+            )}
+
+            {weatherLoading && !weatherData ? (
+              <LoadingSkeleton />
+            ) : weatherError ? (
+              <div className="bg-red-50 border border-red-200 text-red-800 px-5 py-4 rounded-xl mb-6">
+                {t[language].errorLoading}
+                <button onClick={handleRefresh} className="ml-3 underline font-semibold">{t[language].retry}</button>
+              </div>
+            ) : weatherData ? (
+              <>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                  <CurrentWeatherCard data={weatherData} language={language} t={t[language]} />
+                  <AIAdviceCard summary={weatherData.aiSummary} analysis={analysis} language={language} t={t[language]} />
+                </div>
+                <ForecastCard forecast={weatherData.forecast} language={language} t={t[language]} />
+                {analysis && <FarmingInsightsCard analysis={analysis} language={language} t={t[language]} />}
+              </>
+            ) : null}
           </>
-        ) : null}
+        ) : (
+          <AgroforestryAnalysis language={language} />
+        )}
       </div>
     </div>
   );

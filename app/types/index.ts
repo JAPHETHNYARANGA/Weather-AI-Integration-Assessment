@@ -69,3 +69,34 @@ export interface FarmingJournalEntry {
   weather: string;
   notes: string;
 }
+
+export interface TreeAnalysisResult {
+  analysis_id: string;
+  timestamp: string;
+  farmer_id: string;
+  county: string;
+  location: string;
+  land_acres: number;
+  total_tree_count: number;
+  tree_density_per_acre: number;
+  confidence_score: number;
+  canopy_coverage_pct: number;
+  tree_health: {
+    healthy: number;
+    needs_care: number;
+    needs_replacement: number;
+  };
+  low_confidence: boolean;
+  tree_species_guess: string;
+  observations: string[];
+  recommendations: string[];
+  original_image_url: string;
+  overlay_image_url: string;
+  cv_debug?: {
+    orig_resolution: string;
+    work_resolution: string;
+    canopy_px: number;
+    peaks_detected: number;
+    after_area_filter: number;
+  };
+}
